@@ -1,25 +1,25 @@
 class Solution {
 public:
-    void helper(int ind,vector<int> &ds, vector<int>&nums, int n, vector<vector<int>>&ans){
-        if(ind>=n){
+    void powSet(int index, int n, vector<int>& nums, vector<int>& ds, vector<vector<int>>&ans){
+        if(index==n){
             ans.push_back(ds);
             return;
         }
-        ds.push_back(nums[ind]);
-        helper(ind+1, ds, nums, n, ans);
+
+        ds.push_back(nums[index]);
+        powSet(index+1,n, nums ,ds, ans);
 
         ds.pop_back();
-        helper(ind+1, ds,nums, n, ans);
-    
+        powSet(index+1,n,nums,ds,ans);
     }
     vector<vector<int>> subsets(vector<int>& nums) {
     //recursive concept........
-    int n= nums.size();
+    int n=nums.size();
     vector<vector<int>>ans;
     vector<int>ds;
-    helper(0,ds, nums,n,ans);
-     
-     return ans;
+
+    powSet(0,n,nums,ds,ans);
+    return ans;
 
         //bit manupulation concept.....................
     //    vector<vector<int>>ans;
