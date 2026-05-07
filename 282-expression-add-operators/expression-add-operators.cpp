@@ -1,56 +1,60 @@
 class Solution {
 public:
-    void helper(string num,int target, int n,string expression,int ind,long last_op,long current_val,vector<string>&ans){
-       
-       if(ind==n){
-        if(target==current_val){
-            ans.push_back(expression);
-            
+    void helper(string num,int target,int n, vector<string>&ans,int ind,long current_val,string expression,long last_op){
+        
+        if(ind==n){
+            if(current_val==target){
+                ans.push_back(expression);
+            }
+            return;
         }
-        return;
-       }
-       long current_number = 0;
+        long current_number=0;
 
-       for(int i=ind;i<n;i++){
-          if(i>ind && num[ind]=='0')break;
+        for(int i=ind;i<n;i++){
+            if(i>ind && num[ind]=='0')break;
 
-          current_number = current_number*10+(num[i]-'0');
-          string current_string = num.substr(ind, i-ind+1);
+            current_number = current_number*10+(num[i]-'0');
+            string current_string = num.substr(ind,i-ind+1);
 
-          if(ind==0){
-            helper(num,target,n,current_string,i+1,current_number,current_number, ans);
-          }
-          else{
-              helper(num,target,n,
-                     expression+"+"+current_string,
-                     i+1,
-                     current_number,
-                     current_val+current_number,
-                     ans);
+            if(ind==0){
+                helper(num,target,n,ans,
+                        i+1,
+                        current_number,
+                        current_string,
+                        current_number);
+            }
+            else{
+                //addition
+                helper(num,target,n,ans,
+                        i+1,
+                        current_val+current_number,
+                        expression+"+"+current_string,
+                        current_number);
 
-              helper(num,target,n,
-                     expression+"-"+current_string,
-                     i+1,
-                     -current_number,
-                     current_val-current_number,
-                     ans);
+                //subtraction
+                helper(num,target,n,ans,
+                        i+1,
+                        current_val-current_number,
+                        expression+"-"+current_string,
+                        -current_number);
 
-              helper(num,target,n,
-                     expression+"*"+current_string,
-                     i+1,
-                     last_op*current_number,
-                     current_val-last_op+(last_op*current_number),
-                     ans);
-
-          }
-       }
+                //multiplication
+                helper(num,target,n,ans,
+                        i+1,
+                        current_val-last_op+(last_op*current_number),
+                        expression+"*"+current_string,
+                        current_number*last_op);
+            }
+        }
     }
     vector<string> addOperators(string num, int target) {
         int n= num.size();
-        string expression="";
+
+        string expression ="";
         vector<string>ans;
 
-        helper(num,target,n,expression, 0,0,0,ans);
+        helper(num,target,n,ans,0,0,expression,0);
+
         return ans;
     }
 };
