@@ -1,15 +1,19 @@
 class Solution {
 public:
     int singleNumber(vector<int>& nums) {
-        int n = nums.size();
-        unordered_map<int,int>mp;
-        for(int i=0;i<n;i++){
-            mp[nums[i]]++;
+        int n=nums.size();
+        int ans=0;
+        for(int bitIndex = 0 ; bitIndex<=31 ; bitIndex++){
+             int count = 0;
+             for(int i=0;i<n;i++){
+                if(nums[i] & (1<<bitIndex)){
+                    count++;
+                }
+             }
+             if(count%3==1){
+                ans = ans |(1<<bitIndex);
+             }
         }
-
-        for(auto it:mp){
-            if(it.second==1)return it.first;
-        }
-        return -1;
+        return ans;
     }
 };
