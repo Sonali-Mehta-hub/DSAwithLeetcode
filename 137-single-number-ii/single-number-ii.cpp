@@ -1,21 +1,13 @@
 class Solution {
 public:
     int singleNumber(vector<int>& nums) {
-        int n = nums.size();
-        int ans=0;
-
-        for(int bitIndex=0;bitIndex<32;bitIndex++){
-            int count = 0;
-            for(int i=0;i<n;i++){
-                if(nums[i]&(1<<bitIndex)){
-                    count++;
-                }
-
-            }
-            if(count%3==1){
-                ans= ans | (1<<bitIndex);
-            }
+        int n=nums.size();
+        int ones=0, twos=0;
+        for(int i=0;i<n;i++){
+            ones = (ones ^ nums[i]) & (~twos);
+            twos = (twos^nums[i])&(~ones);
         }
-        return ans;
+
+        return ones;
     }
 };
