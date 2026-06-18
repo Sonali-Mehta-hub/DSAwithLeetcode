@@ -3,14 +3,14 @@ public:
     stack<int>st;
     stack<int>minSt;
     MinStack() {
-       
+        
     }
     
     void push(int value) {
        st.push(value);
        if(minSt.empty() || value<=minSt.top()){
         minSt.push(value);
-       }
+       } 
     }
     
     void pop() {
@@ -21,7 +21,7 @@ public:
     }
     
     int top() {
-       return st.top() ;
+        return st.top();
     }
     
     int getMin() {
